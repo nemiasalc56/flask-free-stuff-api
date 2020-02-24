@@ -67,4 +67,13 @@ def register():
 
 
 # login route
+@users.route('/login', methods=['POST'])
+def login():
+	
+
+	return "you hit the login route"
+
+
+
+
 
