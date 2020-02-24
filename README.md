@@ -31,6 +31,7 @@ class User(UserMixin, Model):
 class Item(Model):
 	name = CharField()
 	picture = CharField()
+	description = CharField()
 	address = ForeignKeyField(Address, backref='address')
 	owner = ForeignKeyField(User, backref='items')
 	created_at = DateTimeField(default=datetime.datetime.now)
