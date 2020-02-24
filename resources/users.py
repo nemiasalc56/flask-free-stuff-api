@@ -136,9 +136,34 @@ def update_user(id):
 	print(id)
 	# look up user with the same id
 	user = models.User.get_by_id(id)
-	print(user)
+	print(user.address.address_1)
 
-	return "You reach the update route"
+	# update address info
+	address = models.Address.get_by_id(user.address.id)
+	address.address_1 = payload['address_1'] if 'address_1' in payload else None
+	address.address_2 = payload['address_2'] if 'address_2' in payload else None
+	address.city = payload['city'] if 'city' in payload else None
+	address.state = payload['state'] if 'state' in payload else None
+	address.zip_code = payload['zip_code'] if 'zip_code' in payload else None
+	address.save()
+
+
+	# update user info
+	user.first_name = payload['first_name'] if 'first_name' in payload else None
+	user.last_name = payload['last_name'] if 'last_name' in payload else None
+	user.picture = payload['picture'] if 'picture' in payload else None
+	user.password = payload['password'] if 'password' in payload else None
+	user.address = address
+	user.save()
+
+	# convert model to a dictionary
+	user_dict = model_to_dict(user)
+
+	return jsonify(
+		data=user_dict,
+		message="Succesfully update the user information",
+		status=200
+		),200
 
 
 
