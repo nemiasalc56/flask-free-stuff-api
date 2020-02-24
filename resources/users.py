@@ -2,6 +2,8 @@
 import models
 from flask import Blueprint, request, jsonify
 from playhouse.shortcuts import model_to_dict
+from flask_bcrypt import generate_password_hash
+from flask_login import login_user
 
 
 
@@ -30,7 +32,7 @@ def register():
 			), 401
 	# if it doesn't, then create account
 	except models.DoesNotExist:
-		# create the addres
+		# create the address
 		user_address = models.Address.create(
 			address_1= payload['address_1'],
 			address_2= payload['address_2'],
@@ -48,14 +50,21 @@ def register():
 			picture=payload['picture'],
 			address=user_address.id,
 			email= payload['email'],
-			password= payload['password']
+			password= generate_password_hash(payload['password'])
 			)
 
 		user_dict = model_to_dict(new_user)
 		print(user_dict)
+		# remove the password
+		user_dict.pop('password')
 
 		return jsonify(
 			data=user_dict,
 			message=f"Succesfully created user with email {user_dict['email']}",
 			status=200
 			), 200
+
+
+
+# login route
+
