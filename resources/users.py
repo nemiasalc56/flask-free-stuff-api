@@ -171,7 +171,22 @@ def update_user(id):
 def delete_user(id):
 	print(id)
 
-	return "You hit the delete route"
+	# look up user
+	user = models.User.get_by_id(id)
+
+	# look up user address
+	user_address = models.Address.get_by_id(user.address.id)
+
+	# delete address
+	user_address.delete_instance()
+	# delete user
+	user.delete_instance()
+
+	return jsonify(
+		data={},
+		message="Succesfully deleted user account.",
+		status=200
+		), 200
 
 
 
