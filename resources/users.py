@@ -2,7 +2,7 @@
 import models
 from flask import Blueprint, request, jsonify
 from playhouse.shortcuts import model_to_dict
-from flask_bcrypt import generate_password_hash
+from flask_bcrypt import generate_password_hash, check_password_hash
 from flask_login import login_user
 
 
@@ -69,9 +69,52 @@ def register():
 # login route
 @users.route('/login', methods=['POST'])
 def login():
+	# get the info from the request
+	payload = request.get_json()
+	print(payload)
+	# make the email lower case
+	payload['email'] = payload['email'].lower()
+
+	try:
+		# look use up by email
+		user = models.User.get(models.User.email == payload['email']) 
+		# this will cause an error if the user doesn't exist
+
+		user_dict = model_to_dict(user)
+
+		# check the password
+		password_is_good = check_password_hash(user_dict['password'], payload['password'])
+
+		# if the password is good, log user in
+		if password_is_good:
+			# this logs the user and starts a session
+			login_user(user)
+			# remove the password before we send the information to the user
+			user_dict.pop('password')
+
+			return jsonify(
+				data=user_dict,
+				message=f"Succesfully logged in with the email {user_dict['email']}",
+				status=200
+				), 200
+		# if not, inform the user that the email or password is incorrect
+		else:
+			return jsonify(
+				data={},
+				message="The email or password is incorrect",
+				status=401
+			), 401
+	# if we don't find the user
+	except models.DoesNotExist:
+		# inform user that email or password is incorrect.
+		return jsonify(
+				data={},
+				message="The email or password is incorrect",
+				status=401
+		), 401
+
 	
 
-	return "you hit the login route"
 
 
 
