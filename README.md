@@ -1,5 +1,16 @@
 ## Free Stuff
 
+## Installation
+
+* ```$ virtualenv .env -p python3```
+* ```$ source .env/bin/activate```
+* ```$ pip3 install virtualenv```
+* ```$ pip3 install flask```
+* ```$ pip3 install peewee psycopg2```
+* ```$ pip3 freeze > requirements.txt```
+* ```$ pip3 install flask_login flask-bcrypt```
+
+
 ## Models
 ```
 class User(UserMixin, Model):
@@ -54,4 +65,5 @@ class Comment(Model):
 | ------------- |:-----------------:| -------------------:|
 | GET 			| /comments			| list the commnets	  |
 | POST 			| /comments 		| create a comment 	  |
-| DELETE 		| /comments/<id> 	| delete a commnet 	  |
+| DELETE 		| /comments/<id> 	| delete a comment 	  |
+
