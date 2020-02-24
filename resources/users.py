@@ -127,6 +127,19 @@ def logout():
 		status=201
 	), 201
 
+# update route
+@users.route('/<id>', methods=['PUT'])
+def update_user(id):
+	# get the info from the body
+	payload = request.get_json()
+	# print(payload)
+	print(id)
+	# look up user with the same id
+	user = models.User.get_by_id(id)
+	print(user)
+
+	return "You reach the update route"
+
 
 
 
