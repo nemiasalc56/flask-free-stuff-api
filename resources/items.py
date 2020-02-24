@@ -66,3 +66,18 @@ def create_item():
 		message="Succesfully create an item",
 		status=200
 		), 200
+
+
+# update route
+@items.route('/<id>', methods=['PUT'])
+def update_item(id):
+	print(id)
+
+	return "You hit the update route"
+
+
+
+
+
+
+
