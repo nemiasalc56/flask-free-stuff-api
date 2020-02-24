@@ -13,24 +13,31 @@
 
 ## Models
 ```
+class Address(Model):
+	address_1 = CharField()
+	address_2 = CharField()
+	city = CharField()
+	state = CharField()
+	zip_code = CharField()
+
 class User(UserMixin, Model):
 	first_name = CharField()
 	last_name = CharField()
 	picture = CharField()
-	address = CharField()
+	address = ForeignKeyField(Address, backref='address')
 	email = CharField(unique=True)
 	password = CharField()
 
 class Item(Model):
 	name = CharField()
 	picture = CharField()
-	address = CharField()
+	address = ForeignKeyField(Address, backref='address')
 	owner = ForeignKeyField(User, backref='items')
 	created_at = DateTimeField(default=datetime.datetime.now)
 
 class Comment(Model):
 	comment = CharField()
-	author = ForeignKeyField(User, backref='items')
+	author = ForeignKeyField(User, backref='user')
 	item = ForeignKeyField(Item, backref='items')
 	created_at = DateTimeField(default=datetime.datetime.now)
 ```
