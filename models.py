@@ -25,6 +25,9 @@ class Address(Model):
 	state = CharField()
 	zip_code = CharField()
 
+	class Meta:
+		database = DATABASE
+
 
 # defining our user model
 class User(UserMixin, Model):
@@ -44,7 +47,7 @@ class User(UserMixin, Model):
 # this method will set up the connection to our database
 def initialize():
 	DATABASE.connect()
-	DATABASE.create_tables([User], safe=True)
+	DATABASE.create_tables([User, Address], safe=True)
 
 	print("Connected to database and created tables if they weren't already there.")
 
