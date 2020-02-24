@@ -38,16 +38,28 @@ class User(UserMixin, Model):
 	email = CharField(unique=True)
 	password = CharField()
 
-	# this gives our class instructions on how to connect to a specific databse
+	# this gives our class instructions on how to connect to a specific database
 	class Meta:
 		database = DATABASE
 
 
 
+# definening our items model
+class Item(Model):
+	name = CharField()
+	picture = CharField()
+	address = ForeignKeyField(Address, backref='address')
+	owner = ForeignKeyField(User, backref='items')
+	created_at = DateTimeField(default=datetime.datetime.now)
+
+	# connect to a specific database
+	class Meta:
+		database = DATABASE
+
 # this method will set up the connection to our database
 def initialize():
 	DATABASE.connect()
-	DATABASE.create_tables([User, Address], safe=True)
+	DATABASE.create_tables([User, Address, Item], safe=True)
 
 	print("Connected to database and created tables if they weren't already there.")
 
