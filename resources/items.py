@@ -14,8 +14,21 @@ items = Blueprint('items', 'items')
 # index route
 @items.route('/', methods=['GET'])
 def item_index():
+	# look up all the items
+	all_items_query = models.Item.select()
 
-	return "You hit the index route"
+	# conver items to dictionary
+	item_dicts = [model_to_dict(item) for item in all_items_query]
+	#remove the password from each item's owner
+	for idx in range(0, len(item_dicts)):
+		print(item_dicts[idx]['owner'].pop('password'))
+	print(item_dicts)
+
+	return jsonify(
+		data=item_dicts,
+		message=f"Succesfully retrieved {len(item_dicts)} items.",
+		status=200
+		), 200
 
 
 
