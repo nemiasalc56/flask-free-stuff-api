@@ -11,7 +11,11 @@ items = Blueprint('items', 'items')
 
 
 
+# index route
+@items.route('/', methods=['GET'])
+def item_index():
 
+	return "You hit the index route"
 
 
 
@@ -39,8 +43,8 @@ def create_item():
 		address = item_address.id,
 		owner = current_user.id
 		)
-
 	item_dict = model_to_dict(item)
+
 	# remove password
 	item_dict['owner'].pop('password')
 
