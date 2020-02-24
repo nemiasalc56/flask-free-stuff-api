@@ -1,0 +1,57 @@
+## Free Stuff
+
+## Models
+```
+class User(UserMixin, Model):
+	first_name = CharField()
+	last_name = CharField()
+	picture = CharField()
+	address = CharField()
+	email = CharField(unique=True)
+	password = CharField()
+
+class Item(Model):
+	name = CharField()
+	picture = CharField()
+	address = CharField()
+	owner = ForeignKeyField(User, backref='items')
+	created_at = DateTimeField(default=datetime.datetime.now)
+
+class Comment(Model):
+	comment = CharField()
+	author = ForeignKeyField(User, backref='items')
+	item = ForeignKeyField(Item, backref='items')
+	created_at = DateTimeField(default=datetime.datetime.now)
+```
+
+## API routes
+
+--Item
+
+| HTTP method	| URL path			| Description	 |
+| ------------- |:-----------------:| --------------:|
+| GET 			| /items 			| list of items	 |
+| GET 			| /items/<id>		| show one item  |
+| POST			| /items			| create item 	 |
+| PUT 			| /items/<id> 		| update an item |
+| DELETE 		| /items/<id> 		| delete an item |
+
+
+--User
+
+| HTTP method	|	URL path		| Description		  |
+| ------------- |:-----------------:| -------------------:|
+| GET 			| /users			| user profile		  |
+| POST 			| /users/login 		| log user in 		  |
+| GET 			| /users/logout 	| log user out 		  |
+| POST 			| /users/register 	| register user 	  |
+| PUT 			| /users/<id> 		| update user account |
+| DELETE 		| /users/<id>		| delete the account  |
+
+
+--Comment
+| HTTP method	|	URL path		| Description		  |
+| ------------- |:-----------------:| -------------------:|
+| GET 			| /comments			| list the commnets	  |
+| POST 			| /comments 		| create a comment 	  |
+| DELETE 		| /comments/<id> 	| delete a commnet 	  |
