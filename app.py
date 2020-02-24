@@ -3,6 +3,7 @@ from flask import Flask
 import models
 # import our resources
 from resources.users import users
+from resources.items import items
 # this is the main tool for coordinating the login/session
 from flask_login import LoginManager
 
@@ -38,7 +39,7 @@ def load_user(user_id):
 
 # use the blueprint that will handle the users stuff
 app.register_blueprint(users, url_prefix='/api/v1/users/')
-
+app.register_blueprint(items, url_prefix='/api/v1/items/')
 
 
 
