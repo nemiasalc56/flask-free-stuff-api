@@ -1,7 +1,7 @@
 import models
 from flask import Blueprint, request, jsonify
 # this is so that we can have access to the user that is logged in
-from flask_login import current_user
+from flask_login import current_user, login_required
 from playhouse.shortcuts import model_to_dict
 
 
@@ -34,6 +34,8 @@ def item_index():
 
 # define our create route
 @items.route('/', methods=['POST'])
+# this is so that only if you are logged in will have access to this route
+@login_required
 def create_item():
 	# get info from body
 	payload = request.get_json()
@@ -71,6 +73,8 @@ def create_item():
 
 # update route
 @items.route('/<id>', methods=['PUT'])
+# this is so that only if you are logged in will have access to this route
+@login_required
 def update_item(id):
 	# get the information from the request
 	payload = request.get_json()
@@ -78,44 +82,57 @@ def update_item(id):
 	# look up the item that matches this id
 	item = models.Item.get_by_id(id)
 	
+	# check if user id matches item's owner
+	if item.owner.id == current_user.id:
+		# if they do, update the item
+		print("They match")
 	
-	# look up the item's address
-	item_address = models.Address.get_by_id(item.address.id)
+		# look up the item's address
+		item_address = models.Address.get_by_id(item.address.id)
 
-	# update the address
-	item_address.address_1 = payload['address_1'] if 'address_1' in payload else None
-	item_address.address_2 = payload['address_2'] if 'address_2' in payload else None
-	item_address.city = payload['city'] if 'city' in payload else None
-	item_address.state = payload['state'] if 'state' in payload else None
-	item_address.zip_code = payload['zip_code'] if 'zip_code' in payload else None
-	# save the changes
-	item_address.save()
+		# update the address
+		item_address.address_1 = payload['address_1'] if 'address_1' in payload else None
+		item_address.address_2 = payload['address_2'] if 'address_2' in payload else None
+		item_address.city = payload['city'] if 'city' in payload else None
+		item_address.state = payload['state'] if 'state' in payload else None
+		item_address.zip_code = payload['zip_code'] if 'zip_code' in payload else None
+		# save the changes
+		item_address.save()
 
-	print(item_address)
-	# update the item
-	item.name = payload['name'] if 'name' in payload else None
-	item.category = payload['category'] if 'category' in payload else None
-	item.description = payload['description'] if 'description' in payload else None
-	item.picture = payload['picture'] if 'picture' in payload else None
-	item.address = item_address
-	# save the changes
-	item.save()
+		# print(item_address)
+		# update the item
+		item.name = payload['name'] if 'name' in payload else None
+		item.category = payload['category'] if 'category' in payload else None
+		item.description = payload['description'] if 'description' in payload else None
+		item.picture = payload['picture'] if 'picture' in payload else None
+		item.address = item_address
+		# save the changes
+		item.save()
 
-	# convert item to dictionary
-	item_dict = model_to_dict(item)
+		# convert item to dictionary
+		item_dict = model_to_dict(item)
 
-	# remove owner password
-	item_dict['owner'].pop('password')
+		# remove owner password
+		item_dict['owner'].pop('password')
 
 
-	return jsonify(
-		data=item_dict,
-		message=f"Succesfully updated the item named {item_dict['name']}",
-		status=200
-		), 200
+		return jsonify(
+			data=item_dict,
+			message=f"Succesfully updated the item named {item_dict['name']}",
+			status=200
+			), 200
+	# if not, their are not allow to do that
+	else:
+		return jsonify(
+			data={},
+			message="You are not allow to do that, only the owner can update the item"
+			)
+
 
 
 @items.route('/<id>', methods=['Delete'])
+# this is so that only if you are logged in will have access to this route
+@login_required
 def delete_item(id):
 
 	# look up item with this id
