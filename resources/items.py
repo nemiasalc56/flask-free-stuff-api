@@ -125,8 +125,9 @@ def update_item(id):
 	else:
 		return jsonify(
 			data={},
-			message="You are not allow to do that, only the owner can update the item"
-			)
+			message="You are not allow to do that, only the owner can update this item",
+			status=403
+			), 403
 
 
 
@@ -137,21 +138,33 @@ def delete_item(id):
 
 	# look up item with this id
 	item = models.Item.get_by_id(id)
-	# look up address of the this item
-	item_address = models.Address.get_by_id(item.address.id)
-	# delete the address of the item
-	item_address.delete_instance()
-	print(item)
-	print(item_address)
-	# delete the item
-	item.delete_instance()
+
+	# check if user id matches item's owner
+	if item.owner.id == current_user.id:
+		# if they do, continue
+
+		# look up address of the this item
+		item_address = models.Address.get_by_id(item.address.id)
+		# delete the address of the item
+		item_address.delete_instance()
+		print(item)
+		print(item_address)
+		# delete the item
+		item.delete_instance()
 
 
-	return jsonify(
-		data={},
-		message="Succesfully deleted item",
-		status=200
-		), 200
+		return jsonify(
+			data={},
+			message="Succesfully deleted item",
+			status=200
+			), 200
+	# if not, their are not allow to do that
+	else:
+		return jsonify(
+			data={},
+			message="You are not allow to do that, only the owner can delete this item",
+			status=403
+		), 403
 
 
 
