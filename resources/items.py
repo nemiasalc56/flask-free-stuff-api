@@ -115,6 +115,13 @@ def update_item(id):
 		), 200
 
 
+@items.route('/<id>', methods=['Delete'])
+def delete_item(id):
+
+	print(id)
+
+	return "You hit the delete route"
+
 
 
 
