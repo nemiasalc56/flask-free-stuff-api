@@ -51,6 +51,7 @@ def create_item():
 	# create item
 	item = models.Item.create(
 		name = payload['name'],
+		category = payload['category'],
 		description = payload['description'],
 		picture = payload['picture'],
 		address = item_address.id,
@@ -71,7 +72,15 @@ def create_item():
 # update route
 @items.route('/<id>', methods=['PUT'])
 def update_item(id):
-	print(id)
+	# get the information from the request
+	payload = request.get_json()
+
+	# look up the item that matches this id
+	item = models.Item.get_by_id(id)
+	print(item)
+	# update the address
+	# update the item
+
 
 	return "You hit the update route"
 

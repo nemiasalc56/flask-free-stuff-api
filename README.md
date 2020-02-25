@@ -31,6 +31,7 @@ class User(UserMixin, Model):
 class Item(Model):
 	name = CharField()
 	picture = CharField()
+	category = CharField()
 	description = CharField()
 	address = ForeignKeyField(Address, backref='address')
 	owner = ForeignKeyField(User, backref='items')
