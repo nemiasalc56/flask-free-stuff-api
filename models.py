@@ -58,6 +58,16 @@ class Item(Model):
 	class Meta:
 		database = DATABASE
 
+# defining our comment model
+class Comment(Model):
+	comment = CharField()
+	author = ForeignKeyField(User, backref='comments')
+	item = ForeignKeyField(Item, backref='items')
+
+	class Meta:
+		database = DATABASE
+
+
 # this method will set up the connection to our database
 def initialize():
 	DATABASE.connect()

@@ -70,9 +70,20 @@ class Comment(Model):
 
 
 --Comment
+
 | HTTP method	|	URL path		| Description		  |
 | ------------- |:-----------------:| -------------------:|
 | GET 			| /comments			| list the commnets	  |
 | POST 			| /comments 		| create a comment 	  |
 | DELETE 		| /comments/<id> 	| delete a comment 	  |
+
+
+## Developtment process
+
+* Create comments
+* Read comments
+* Delete comments
+* Cascading delete (destroy)
+
+
 
