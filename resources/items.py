@@ -30,6 +30,12 @@ def item_index():
 		status=200
 		), 200
 
+# item show page
+@items.route('/<id>', methods=['GET'])
+def get_one_item(id):
+	print(id)
+
+	return "You hit the show route"
 
 
 # define our create route
