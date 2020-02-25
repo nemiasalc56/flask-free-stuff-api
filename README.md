@@ -61,7 +61,7 @@ class Comment(Model):
 
 | HTTP method	|	URL path		| Description		  |
 | ------------- |:-----------------:| -------------------:|
-| GET 			| /users			| user profile		  |
+| GET 			| /users/profile	| user profile		  |
 | POST 			| /users/login 		| log user in 		  |
 | GET 			| /users/logout 	| log user out 		  |
 | POST 			| /users/register 	| register user 	  |

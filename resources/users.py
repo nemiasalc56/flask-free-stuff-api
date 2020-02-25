@@ -3,7 +3,7 @@ import models
 from flask import Blueprint, request, jsonify
 from playhouse.shortcuts import model_to_dict
 from flask_bcrypt import generate_password_hash, check_password_hash
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 
 
 
@@ -114,6 +114,14 @@ def login():
 				message="The email or password is incorrect",
 				status=401
 		), 401
+
+
+# user show route
+@users.route('/profile', methods=['GET'])
+def get_one_user():
+	print(current_user)
+
+	return "You hit user show route"
 
 
 # logout route
