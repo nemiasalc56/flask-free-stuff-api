@@ -16,6 +16,18 @@ DATABASE = SqliteDatabase('items.sqlite')
 
 
 
+# defining an address model
+class Address(Model):
+	address_1 = CharField()
+	address_2 = CharField()
+	city = CharField()
+	state = CharField()
+	zip_code = CharField()
+	lat = IntegerField()
+	lng = IntegerField()
+
+	class Meta:
+		database = DATABASE
 
 
 
@@ -26,25 +38,14 @@ class User(UserMixin, Model):
 	picture = CharField()
 	email = CharField(unique=True)
 	password = CharField()
-	latitude = IntegerField()
-	longitude = IntegerField()
+	address = ForeignKeyField(Address, backref='address')
 
 	# this gives our class instructions on how to connect to a specific database
 	class Meta:
 		database = DATABASE
 
 
-# defining an address model
-class Address(Model):
-	owner = ForeignKeyField(User, backref='address')
-	address_1 = CharField()
-	address_2 = CharField()
-	city = CharField()
-	state = CharField()
-	zip_code = CharField()
 
-	class Meta:
-		database = DATABASE
 
 # definening our items model
 class Item(Model):
@@ -52,9 +53,9 @@ class Item(Model):
 	picture = CharField()
 	category = CharField()
 	description = CharField()
-	latitude = IntegerField()
-	longitude = IntegerField()
-	address_1 = CharField()
+	lat = IntegerField()
+	lng = IntegerField()
+	address_1 = CharField() # will come back to this
 	address_2 = CharField()
 	city = CharField()
 	state = CharField()

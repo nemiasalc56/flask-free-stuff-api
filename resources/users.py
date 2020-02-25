@@ -15,9 +15,10 @@ users = Blueprint('users', 'users')
 # register create route
 @users.route('/register', methods=['POST'])
 def register():
+
 	# get the information from the request
 	payload = request.get_json()
-	print(payload)
+	
 	# make email lower case
 	payload['email'] = payload['email'].lower()
 	# check if the email already exists
@@ -32,27 +33,26 @@ def register():
 			), 401
 	# if it doesn't, then create account
 	except models.DoesNotExist:
+		# create the address
+		user_address = models.Address.create(
+			address_1= payload['address_1'],
+			address_2= payload['address_2'],
+			city= payload['city'],
+			state= payload['state'],
+			zip_code= payload['zip_code'],
+			lat=payload['lat'],
+			lng=payload['lng']
+			)
+
 		# create the user with the address
 		new_user = models.User.create(
 			first_name=payload['first_name'],
 			last_name=payload['last_name'],
 			picture=payload['picture'],
+			address=user_address.id,
 			email= payload['email'],
 			password= generate_password_hash(payload['password'])
 			)
-
-		# create the address
-		user_address = models.Address.create(
-			owner = new_user.id,
-			address_1= payload['address_1'],
-			address_2= payload['address_2'],
-			city= payload['city'],
-			state= payload['state'],
-			zip_code= payload['zip_code']
-			)
-		print("user_address")
-		print(user_address)
-
 		# this logs the user and starts a session
 		login_user(new_user)
 
@@ -74,7 +74,7 @@ def register():
 def login():
 	# get the info from the request
 	payload = request.get_json()
-	print(payload)
+	
 	# make the email lower case
 	payload['email'] = payload['email'].lower()
 
@@ -120,22 +120,17 @@ def login():
 # user show route
 @users.route('/profile', methods=['GET'])
 def user_profile():
-	# print(current_user.id)
+	print(current_user.id)
 	# look up user with current_user id
 	user = models.User.get_by_id(current_user.id)
-	user_address = models.Address.get_by_id(models.Address.owner == current_user.id)
 
 	# convert to dictionary
 	user_dict = model_to_dict(user)
-	user_address_dict = model_to_dict(user_address)
 	# remove password
 	user_dict.pop('password')
-	user_address_dict['owner'].pop('password')
-	print("This is user address")
-	print(user_address_dict)
-
+	
 	return jsonify(
-		data=user_address_dict,
+		data=user_dict,
 		message=f"Succesfully found user with id {current_user.id}",
 		status=200
 		), 200
@@ -157,38 +152,38 @@ def logout():
 def update_user(id):
 	# get the info from the body
 	payload = request.get_json()
-	
+	# print(payload)
+	print(id)
 	# look up user with the same id
 	user = models.User.get_by_id(id)
 	
+
+	# update address info
+	address = models.Address.get_by_id(user.address.id)
+	address.address_1 = payload['address_1'] if 'address_1' in payload else None
+	address.address_2 = payload['address_2'] if 'address_2' in payload else None
+	address.city = payload['city'] if 'city' in payload else None
+	address.state = payload['state'] if 'state' in payload else None
+	address.zip_code = payload['zip_code'] if 'zip_code' in payload else None
+	address.lat = payload['lat'] if 'lat' in payload else None
+	address.lng = payload['lng'] if 'lng' in payload else None
+	address.save()
+
+
 	# update user info
 	user.first_name = payload['first_name'] if 'first_name' in payload else None
 	user.last_name = payload['last_name'] if 'last_name' in payload else None
 	user.picture = payload['picture'] if 'picture' in payload else None
-	user.password = generate_password_hash(payload['password']) if 'password' in payload else None
+	user.password = payload['password'] if 'password' in payload else None
+	user.address = address
 	user.save()
-
-	# update address info
-	user_address = models.Address.get_by_id(models.Address.owner == current_user.id)
-	user_address.owner = current_user.id
-	user_address.address_1 = payload['address_1'] if 'address_1' in payload else None
-	user_address.address_2 = payload['address_2'] if 'address_2' in payload else None
-	user_address.city = payload['city'] if 'city' in payload else None
-	user_address.state = payload['state'] if 'state' in payload else None
-	user_address.zip_code = payload['zip_code'] if 'zip_code' in payload else None
-	user_address.save()
 
 	# convert model to a dictionary
 	user_dict = model_to_dict(user)
-	found_user_address = models.Address.get_by_id(user_address.id)
-	user_address_dict = model_to_dict(found_user_address)
-
-	# remove password
-	user_dict.pop('password')
-	user_address_dict['owner'].pop('password')
+	print(user_dict)
 
 	return jsonify(
-		data=user_address_dict,
+		data=user_dict,
 		message="Succesfully update the user information",
 		status=200
 		),200

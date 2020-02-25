@@ -59,22 +59,19 @@ def create_item():
 	payload = request.get_json()
 	print(payload)
 
-	# create address first
-	item_address = models.Address.create(
-		address_1= payload['address_1'],
-		address_2= payload['address_2'],
-		city= payload['city'],
-		state= payload['state'],
-		zip_code= payload['zip_code']
-		)
-
 	# create item
 	item = models.Item.create(
 		name = payload['name'],
 		category = payload['category'],
 		description = payload['description'],
 		picture = payload['picture'],
-		address = item_address.id,
+		address_1= payload['address_1'],
+		address_2= payload['address_2'],
+		city= payload['city'],
+		state= payload['state'],
+		zip_code= payload['zip_code'],
+		lat=payload['lat'],
+		lng=payload['lng'],
 		owner = current_user.id
 		)
 	item_dict = model_to_dict(item)
