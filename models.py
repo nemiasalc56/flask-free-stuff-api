@@ -26,6 +26,8 @@ class User(UserMixin, Model):
 	picture = CharField()
 	email = CharField(unique=True)
 	password = CharField()
+	latitude = IntegerField()
+	longitude = IntegerField()
 
 	# this gives our class instructions on how to connect to a specific database
 	class Meta:
@@ -50,6 +52,8 @@ class Item(Model):
 	picture = CharField()
 	category = CharField()
 	description = CharField()
+	latitude = IntegerField()
+	longitude = IntegerField()
 	address_1 = CharField()
 	address_2 = CharField()
 	city = CharField()

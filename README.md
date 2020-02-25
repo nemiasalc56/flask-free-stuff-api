@@ -34,6 +34,8 @@ class Item(Model):
 	picture = CharField()
 	category = CharField()
 	description = CharField()
+	latitude = Numeric()
+	longitude = Numeric()
 	address_1 = CharField()
 	address_2 = CharField()
 	city = CharField()

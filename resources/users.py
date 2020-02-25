@@ -119,7 +119,7 @@ def login():
 
 # user show route
 @users.route('/profile', methods=['GET'])
-def get_one_user():
+def user_profile():
 	# print(current_user.id)
 	# look up user with current_user id
 	user = models.User.get_by_id(current_user.id)
@@ -135,7 +135,7 @@ def get_one_user():
 	print(user_address_dict)
 
 	return jsonify(
-		data=user_dict,
+		data=user_address_dict,
 		message=f"Succesfully found user with id {current_user.id}",
 		status=200
 		), 200
@@ -157,8 +157,7 @@ def logout():
 def update_user(id):
 	# get the info from the body
 	payload = request.get_json()
-	# print(payload)
-	print(id)
+	
 	# look up user with the same id
 	user = models.User.get_by_id(id)
 	
@@ -183,13 +182,6 @@ def update_user(id):
 	user_dict = model_to_dict(user)
 	found_user_address = models.Address.get_by_id(user_address.id)
 	user_address_dict = model_to_dict(found_user_address)
-
-	print("user_dict")
-	print(user_dict)
-
-	print('\n')
-	print("user_address_dict")
-	print(user_address_dict)
 
 	# remove password
 	user_dict.pop('password')
