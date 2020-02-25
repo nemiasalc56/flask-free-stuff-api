@@ -119,9 +119,20 @@ def login():
 # user show route
 @users.route('/profile', methods=['GET'])
 def get_one_user():
-	print(current_user)
+	print(current_user.id)
+	# look up user with current_user id
+	user = models.User.get_by_id(current_user.id)
 
-	return "You hit user show route"
+	# convert to dictionary
+	user_dict = model_to_dict(user)
+	# remove password
+	user_dict.pop('password')
+	
+	return jsonify(
+		data=user_dict,
+		message=f"Succesfully found user with id {current_user.id}",
+		status=200
+		), 200
 
 
 # logout route
