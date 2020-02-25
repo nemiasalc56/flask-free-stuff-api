@@ -90,10 +90,8 @@ class Comment(Model):
 
 ## Developtment process
 
-* Feb 25th, Auth full CRUD
+* Feb 25th-27th, flask api complete. Auth and item routes functioning
+	
 
-* Feb 26th, comment complete
- 
-* Feb 27th, flask api complete
 
 
