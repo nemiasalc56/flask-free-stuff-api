@@ -32,8 +32,18 @@ def register():
 			), 401
 	# if it doesn't, then create account
 	except models.DoesNotExist:
+		# create the user with the address
+		new_user = models.User.create(
+			first_name=payload['first_name'],
+			last_name=payload['last_name'],
+			picture=payload['picture'],
+			email= payload['email'],
+			password= generate_password_hash(payload['password'])
+			)
+
 		# create the address
 		user_address = models.Address.create(
+			owner = new_user.id,
 			address_1= payload['address_1'],
 			address_2= payload['address_2'],
 			city= payload['city'],
@@ -43,15 +53,6 @@ def register():
 		print("user_address")
 		print(user_address)
 
-		# create the user with the address
-		new_user = models.User.create(
-			first_name=payload['first_name'],
-			last_name=payload['last_name'],
-			picture=payload['picture'],
-			address=user_address.id,
-			email= payload['email'],
-			password= generate_password_hash(payload['password'])
-			)
 		# this logs the user and starts a session
 		login_user(new_user)
 
@@ -119,15 +120,20 @@ def login():
 # user show route
 @users.route('/profile', methods=['GET'])
 def get_one_user():
-	print(current_user.id)
+	# print(current_user.id)
 	# look up user with current_user id
 	user = models.User.get_by_id(current_user.id)
+	user_address = models.Address.get_by_id(models.Address.owner == current_user.id)
 
 	# convert to dictionary
 	user_dict = model_to_dict(user)
+	user_address_dict = model_to_dict(user_address)
 	# remove password
 	user_dict.pop('password')
-	
+	user_address_dict['owner'].pop('password')
+	print("This is user address")
+	print(user_address_dict)
+
 	return jsonify(
 		data=user_dict,
 		message=f"Succesfully found user with id {current_user.id}",
