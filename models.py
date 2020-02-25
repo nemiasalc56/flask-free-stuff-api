@@ -17,8 +17,24 @@ DATABASE = SqliteDatabase('items.sqlite')
 
 
 
+
+
+# defining our user model
+class User(UserMixin, Model):
+	first_name = CharField()
+	last_name = CharField()
+	picture = CharField()
+	email = CharField(unique=True)
+	password = CharField()
+
+	# this gives our class instructions on how to connect to a specific database
+	class Meta:
+		database = DATABASE
+
+
 # defining an address model
 class Address(Model):
+	owner = ForeignKeyField(User, backref='address')
 	address_1 = CharField()
 	address_2 = CharField()
 	city = CharField()
@@ -28,29 +44,17 @@ class Address(Model):
 	class Meta:
 		database = DATABASE
 
-
-# defining our user model
-class User(UserMixin, Model):
-	first_name = CharField()
-	last_name = CharField()
-	picture = CharField()
-	address = ForeignKeyField(Address, backref='address')
-	email = CharField(unique=True)
-	password = CharField()
-
-	# this gives our class instructions on how to connect to a specific database
-	class Meta:
-		database = DATABASE
-
-
-
 # definening our items model
 class Item(Model):
 	name = CharField()
 	picture = CharField()
 	category = CharField()
 	description = CharField()
-	address = ForeignKeyField(Address, backref='address')
+	address_1 = CharField()
+	address_2 = CharField()
+	city = CharField()
+	state = CharField()
+	zip_code = CharField()
 	owner = ForeignKeyField(User, backref='items')
 	created_at = DateTimeField(default=datetime.datetime.now)
 
@@ -63,6 +67,7 @@ class Comment(Model):
 	comment = CharField()
 	author = ForeignKeyField(User, backref='comments')
 	item = ForeignKeyField(Item, backref='items')
+	created_at = DateTimeField(default=datetime.datetime.now)
 
 	class Meta:
 		database = DATABASE

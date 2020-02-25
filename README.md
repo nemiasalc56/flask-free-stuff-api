@@ -24,7 +24,8 @@ class User(UserMixin, Model):
 	first_name = CharField()
 	last_name = CharField()
 	picture = CharField()
-	address = ForeignKeyField(Address, backref='address')
+	latitude = Numeric()
+	longitude = Numeric()
 	email = CharField(unique=True)
 	password = CharField()
 
@@ -33,7 +34,11 @@ class Item(Model):
 	picture = CharField()
 	category = CharField()
 	description = CharField()
-	address = ForeignKeyField(Address, backref='address')
+	address_1 = CharField()
+	address_2 = CharField()
+	city = CharField()
+	state = CharField()
+	zip_code = CharField()
 	owner = ForeignKeyField(User, backref='items')
 	created_at = DateTimeField(default=datetime.datetime.now)
 
@@ -50,11 +55,14 @@ class Comment(Model):
 
 | HTTP method	| URL path			| Description	 |
 | ------------- |:-----------------:| --------------:|
-| GET 			| /items 			| list of items	 |
-| GET 			| /items/<id>		| show one item  |
-| POST			| /items			| create item 	 |
-| PUT 			| /items/<id> 		| update an item |
-| DELETE 		| /items/<id> 		| delete an item |
+| GET 			| `/items` 			| list of items	 |
+/// use query string to get items in a certain area /items?lat_lng=60626&distance=10
+
+
+| GET 			| `/items/<id>`		| show one item  |
+| POST			| `/items`			| create item 	 |
+| PUT 			| `/items/<id>` 		| update an item |
+| DELETE 		| `/items/<id>` 		| delete an item |
 
 
 --User
@@ -73,17 +81,17 @@ class Comment(Model):
 
 | HTTP method	|	URL path		| Description		  |
 | ------------- |:-----------------:| -------------------:|
-| GET 			| /comments			| list the commnets	  |
-| POST 			| /comments 		| create a comment 	  |
-| DELETE 		| /comments/<id> 	| delete a comment 	  |
+| GET 			| `/comments/<item_id>`	| list the comments	for an item |
+| POST 			| `/comments/<item_id>` 		| create a comment 	  |
+| DELETE 		| `/comments/<id>` 	| delete a comment 	  |
 
 
 ## Developtment process
 
-* Create comments
-* Read comments
-* Delete comments
-* Cascading delete (destroy)
+* Feb 25th, Auth full CRUD
 
+* Feb 26th, comment complete
+ 
+* Feb 27th, flask api complete
 
 
