@@ -162,30 +162,41 @@ def update_user(id):
 	# look up user with the same id
 	user = models.User.get_by_id(id)
 	
-
-	# update address info
-	address = models.Address.get_by_id(user.address.id)
-	address.address_1 = payload['address_1'] if 'address_1' in payload else None
-	address.address_2 = payload['address_2'] if 'address_2' in payload else None
-	address.city = payload['city'] if 'city' in payload else None
-	address.state = payload['state'] if 'state' in payload else None
-	address.zip_code = payload['zip_code'] if 'zip_code' in payload else None
-	address.save()
-
-
 	# update user info
 	user.first_name = payload['first_name'] if 'first_name' in payload else None
 	user.last_name = payload['last_name'] if 'last_name' in payload else None
 	user.picture = payload['picture'] if 'picture' in payload else None
-	user.password = payload['password'] if 'password' in payload else None
-	user.address = address
+	user.password = generate_password_hash(payload['password']) if 'password' in payload else None
 	user.save()
+
+	# update address info
+	user_address = models.Address.get_by_id(models.Address.owner == current_user.id)
+	user_address.owner = current_user.id
+	user_address.address_1 = payload['address_1'] if 'address_1' in payload else None
+	user_address.address_2 = payload['address_2'] if 'address_2' in payload else None
+	user_address.city = payload['city'] if 'city' in payload else None
+	user_address.state = payload['state'] if 'state' in payload else None
+	user_address.zip_code = payload['zip_code'] if 'zip_code' in payload else None
+	user_address.save()
 
 	# convert model to a dictionary
 	user_dict = model_to_dict(user)
+	found_user_address = models.Address.get_by_id(user_address.id)
+	user_address_dict = model_to_dict(found_user_address)
+
+	print("user_dict")
+	print(user_dict)
+
+	print('\n')
+	print("user_address_dict")
+	print(user_address_dict)
+
+	# remove password
+	user_dict.pop('password')
+	user_address_dict['owner'].pop('password')
 
 	return jsonify(
-		data=user_dict,
+		data=user_address_dict,
 		message="Succesfully update the user information",
 		status=200
 		),200
