@@ -21,7 +21,7 @@ def item_index():
 	item_dicts = [model_to_dict(item) for item in all_items_query]
 	#remove the password from each item's owner
 	for idx in range(0, len(item_dicts)):
-		print(item_dicts[idx]['owner'].pop('password'))
+		item_dicts[idx]['owner'].pop('password')
 	print(item_dicts)
 
 	return jsonify(
@@ -30,12 +30,24 @@ def item_index():
 		status=200
 		), 200
 
+
 # item show page
 @items.route('/<id>', methods=['GET'])
 def get_one_item(id):
 	print(id)
+	# look up the item that matches this id
+	item = models.Item.get_by_id(id)
 
-	return "You hit the show route"
+	# conver item to dict
+	item_dict = model_to_dict(item)
+	# remove the password
+	item_dict['owner'].pop('password')
+
+	return jsonify(
+		data=item_dict,
+		message=f"Succesfully found item with id {item_dict['id']}",
+		status=200
+		), 200
 
 
 # define our create route
