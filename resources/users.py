@@ -136,7 +136,7 @@ def update_user(id):
 	print(id)
 	# look up user with the same id
 	user = models.User.get_by_id(id)
-	print(user.address.address_1)
+	
 
 	# update address info
 	address = models.Address.get_by_id(user.address.id)
