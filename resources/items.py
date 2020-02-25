@@ -118,9 +118,23 @@ def update_item(id):
 @items.route('/<id>', methods=['Delete'])
 def delete_item(id):
 
-	print(id)
+	# look up item with this id
+	item = models.Item.get_by_id(id)
+	# look up address of the this item
+	item_address = models.Address.get_by_id(item.address.id)
+	# delete the address of the item
+	item_address.delete_instance()
+	print(item)
+	print(item_address)
+	# delete the item
+	item.delete_instance()
 
-	return "You hit the delete route"
+
+	return jsonify(
+		data={},
+		message="Succesfully deleted item",
+		status=200
+		), 200
 
 
 
