@@ -82,7 +82,16 @@ def create_comment(item_id):
 		), 200
 
 
+# comment delete route
+@comments.route('/<id>', methods=['Delete'])
+def delete_comment(id):
+	# look up comment
+	# allow author of the comment or owner of the comment to delete it
+	# delete comment
 
+
+	print(id)
+	return "You hit the comment delete route"
 
 
 
