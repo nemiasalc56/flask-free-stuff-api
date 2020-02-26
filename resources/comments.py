@@ -86,12 +86,22 @@ def create_comment(item_id):
 @comments.route('/<id>', methods=['Delete'])
 def delete_comment(id):
 	# look up comment
-	# allow author of the comment or owner of the comment to delete it
-	# delete comment
+	comment = models.Comment.get_by_id(id)
+	
+	# allow author of the comment or owner of the item to delete it
+	if comment.author.id == current_user.id or comment.item.owner.id == current_user.id:
+		# delete comment
+		comment.delete_instance()
 
-
-	print(id)
-	return "You hit the comment delete route"
-
-
+		return jsonify(
+			data={},
+			message="Successfully deleted comment.",
+			status=200
+			), 200
+	else:
+		return jsonify(
+			data={},
+			message="Only the owner of the item or author of the comment can delete this comment.",
+			status=401
+			), 401
 
