@@ -58,9 +58,9 @@ class Comment(Model):
 | HTTP method	| URL path			| Description	 |
 | ------------- |:-----------------:| --------------:|
 | GET 			| `/items` 			| list of items	 |
-/// use query string to get items in a certain area /items?lat_lng=60626&distance=10
+/// use query string to get items in a certain area /items?lat_lng=60626&distance=10|
 
-
+| GET 			| `/items/search` 	| list of items by category	 |
 | GET 			| `/items/<id>`		| show one item  |
 | POST			| `/items`			| create item 	 |
 | PUT 			| `/items/<id>` 		| update an item |

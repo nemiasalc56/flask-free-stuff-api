@@ -175,8 +175,9 @@ def delete_item(id):
 		), 403
 
 
-@items.route('/search', methods=['GET'])
-def search():
+# filter by category
+@items.route('/filter', methods=['GET'])
+def filter_category():
 	# get the information from our request
 	payload = request.get_json()
 	print(payload['category'])
@@ -193,7 +194,7 @@ def search():
 		for idx in range(0, len(search_item_dicts)):
 			search_item_dicts[idx]['owner'].pop('password')
 
-			
+
 		return jsonify(
 			data=search_item_dicts,
 			message=f"Succesfully found {len(search_item_dicts)} items with the category of {payload['category']}",
@@ -206,7 +207,6 @@ def search():
 			message="No items was found on this category",
 			status=403
 			), 403
-
 
 
 
