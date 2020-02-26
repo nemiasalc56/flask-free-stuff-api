@@ -157,15 +157,8 @@ def delete_item(id):
 	# check if user id matches item's owner
 	if item.owner.id == current_user.id:
 		# if they do, continue
-
-		# look up address of the this item
-		item_address = models.Address.get_by_id(item.address.id)
-		# delete the address of the item
-		item_address.delete_instance()
-		print(item)
-		print(item_address)
 		# delete the item
-		item.delete_instance()
+		item.delete_instance(recursive=True)
 
 
 		return jsonify(
