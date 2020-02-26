@@ -26,14 +26,26 @@ def get_comments(item_id):
 	all_comments_query = models.Comment.select()
 	
 	comments_dict = [model_to_dict(c) for c in all_comments_query if c.item.id == item_id_int]
-	# print(comments_dict)
-	
+	print(comments_dict)
 
-	return jsonify(
-		data=comments_dict,
-		message=f"Successfully retrieved {len(comments_dict)} comments",
-		status=200
-		), 200
+	if len(comments_dict) == 0:
+		return jsonify(
+		data={},
+		message="This item has no comments",
+		status=401
+		), 401
+	else:
+
+		# remove author's password
+		for idx in range(0, len(comments_dict)):
+			comments_dict[idx]['author'].pop('password')
+			comments_dict[idx]['item']['owner'].pop('password')
+
+		return jsonify(
+			data=comments_dict,
+			message=f"Successfully retrieved {len(comments_dict)} comments",
+			status=200
+			), 200
 
 
 
