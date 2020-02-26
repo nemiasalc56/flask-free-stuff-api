@@ -175,6 +175,11 @@ def delete_item(id):
 		), 403
 
 
+@items.route('/search', methods=['GET'])
+def search():
+	
+	return "You hit the search route"
+
 
 
 
