@@ -11,11 +11,22 @@ from playhouse.shortcuts import model_to_dict
 
 comments = Blueprint('comments', 'comments')
 
+
+# comment index route
+@comments.route('/<item_id>')
+def get_comments(item_id):
+	print(item_id)
+
+	return("You hit the comment index route")
+
+
+
+
 # comment create route
 @comments.route('/<item_id>', methods=['POST'])
 # the user must be logged in to use this route
 @login_required
-def test(item_id):
+def create_comment(item_id):
 	# get the information from the body
 	payload = request.get_json()
 
@@ -41,3 +52,9 @@ def test(item_id):
 		message="Successfully create commented item",
 		status=200
 		), 200
+
+
+
+
+
+
