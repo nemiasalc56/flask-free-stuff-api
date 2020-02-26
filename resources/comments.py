@@ -13,6 +13,8 @@ comments = Blueprint('comments', 'comments')
 
 # comment create route
 @comments.route('/<item_id>', methods=['POST'])
+# the user must be logged in to use this route
+@login_required
 def test(item_id):
 	# get the information from the body
 	payload = request.get_json()
