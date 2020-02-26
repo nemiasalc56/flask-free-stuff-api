@@ -177,8 +177,37 @@ def delete_item(id):
 
 @items.route('/search', methods=['GET'])
 def search():
-	
-	return "You hit the search route"
+	# get the information from our request
+	payload = request.get_json()
+	print(payload['category'])
+
+	# look up items with that category
+	search_items = models.Item.select().where(models.Item.category == payload['category'])
+
+	# if we found the items we can continue
+	if len(search_items) != 0:
+		# convert search_items to dictionary
+		search_item_dicts = [model_to_dict(item) for item in search_items]
+
+		# remove owner's password
+		for idx in range(0, len(search_item_dicts)):
+			search_item_dicts[idx]['owner'].pop('password')
+
+			
+		return jsonify(
+			data=search_item_dicts,
+			message=f"Succesfully found {len(search_item_dicts)} items with the category of {payload['category']}",
+			status=200
+			), 200
+	# if not, inform the user
+	else:
+		return jsonify(
+			data={},
+			message="No items was found on this category",
+			status=403
+			), 403
+
+
 
 
 
