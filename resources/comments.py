@@ -12,8 +12,30 @@ from playhouse.shortcuts import model_to_dict
 comments = Blueprint('comments', 'comments')
 
 # comment create route
-@comments.route('/', methods=['GET'])
-def test():
-	print('hello world')
+@comments.route('/<item_id>', methods=['POST'])
+def test(item_id):
+	# get the information from the body
+	payload = request.get_json()
 
-	return "You hit the comments route"
+	# look up item
+	item = models.Item.get_by_id(item_id)
+
+	# create the comment
+	comment = models.Comment.create(
+		comment=payload['comment'],
+		author=current_user.id,
+		item=item.id
+		)
+	comment_dict = model_to_dict(comment)
+
+	# remove password
+	comment_dict['author'].pop('password')
+	comment_dict['item']['owner'].pop('password')
+
+	print(comment_dict)
+
+	return jsonify(
+		data=comment_dict,
+		message="Successfully create commented item",
+		status=200
+		), 200
