@@ -15,9 +15,25 @@ comments = Blueprint('comments', 'comments')
 # comment index route
 @comments.route('/<item_id>')
 def get_comments(item_id):
-	print(item_id)
+	# look up item
+	item = models.Item.get_by_id(item_id)
 
-	return("You hit the comment index route")
+	# item_id is a string 
+	# so we need to convert it to number
+	item_id_int = int(item_id)
+
+	# look up the comments that match this item
+	all_comments_query = models.Comment.select()
+	
+	comments_dict = [model_to_dict(c) for c in all_comments_query if c.item.id == item_id_int]
+	# print(comments_dict)
+	
+
+	return jsonify(
+		data=comments_dict,
+		message=f"Successfully retrieved {len(comments_dict)} comments",
+		status=200
+		), 200
 
 
 
