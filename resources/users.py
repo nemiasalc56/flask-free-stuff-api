@@ -192,7 +192,6 @@ def update_user(id):
 # destroy route
 @users.route('/<id>', methods=['Delete'])
 def delete_user(id):
-	print(id)
 
 	# look up user
 	user = models.User.get_by_id(id)
@@ -201,9 +200,9 @@ def delete_user(id):
 	user_address = models.Address.get_by_id(user.address.id)
 
 	# delete address
-	user_address.delete_instance()
+	user_address.delete_instance(recursive=True)
 	# delete user
-	user.delete_instance()
+	user.delete_instance(recursive=True)
 
 	return jsonify(
 		data={},

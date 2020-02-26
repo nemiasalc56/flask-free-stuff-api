@@ -6,7 +6,8 @@ from flask_login import UserMixin
 
 
 # using sqlite to have a database
-DATABASE = SqliteDatabase('items.sqlite')
+# pragmas={'foreign_keys': 1} this will allow us to use cascading delete
+DATABASE = SqliteDatabase('items.sqlite', pragmas={'foreign_keys': 1}) 
 
 
 
@@ -60,7 +61,7 @@ class Item(Model):
 	city = CharField()
 	state = CharField()
 	zip_code = CharField()
-	owner = ForeignKeyField(User, backref='items')
+	owner = ForeignKeyField(User, backref='items', on_delete='CASCADE')
 	created_at = DateTimeField(default=datetime.datetime.now)
 
 	# connect to a specific database
@@ -71,7 +72,7 @@ class Item(Model):
 class Comment(Model):
 	comment = CharField()
 	author = ForeignKeyField(User, backref='comments')
-	item = ForeignKeyField(Item, backref='items')
+	item = ForeignKeyField(Item, backref='items', on_delete='CASCADE')
 	created_at = DateTimeField(default=datetime.datetime.now)
 
 	class Meta:

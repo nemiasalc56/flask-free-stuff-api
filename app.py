@@ -1,5 +1,5 @@
 # import flask
-from flask import Flask
+from flask import Flask, jsonify
 import models
 # import our resources
 from resources.users import users
@@ -37,6 +37,17 @@ def load_user(user_id):
 		return models.User.get(models.User.id == user_id)
 	except models.DoesNotExist:
 		return None
+
+@login_manager.unauthorized_handler
+def unauthorized():
+
+	return jsonify(
+		data={
+		'error': 'FORBIDDEN'
+		},
+		message="You are not allow to do that, you must be logged in",
+		status=403
+		), 403
 
 # use the blueprint that will handle the users stuff
 app.register_blueprint(users, url_prefix='/api/v1/users/')
