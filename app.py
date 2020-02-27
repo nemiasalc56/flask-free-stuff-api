@@ -7,6 +7,7 @@ from resources.items import items
 from resources.comments import comments
 # this is the main tool for coordinating the login/session
 from flask_login import LoginManager
+from flask_cors import CORS
 
 
 
@@ -48,6 +49,11 @@ def unauthorized():
 		message="You are not allow to do that, you must be logged in",
 		status=403
 		), 403
+
+
+CORS(users, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(items, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(comments, origins=['http://localhost:3000'], supports_credentials=True)
 
 # use the blueprint that will handle the users stuff
 app.register_blueprint(users, url_prefix='/api/v1/users/')

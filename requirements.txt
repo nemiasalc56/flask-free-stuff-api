@@ -20,6 +20,7 @@ peewee==3.13.1
 psycopg2==2.8.4
 pycparser==2.19
 ratelim==0.1.6
+regex==2020.2.20
 requests==2.23.0
 six==1.14.0
 urllib3==1.25.8

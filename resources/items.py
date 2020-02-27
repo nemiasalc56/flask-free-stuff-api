@@ -3,6 +3,7 @@ from flask import Blueprint, request, jsonify
 # this is so that we can have access to the user that is logged in
 from flask_login import current_user, login_required
 from playhouse.shortcuts import model_to_dict
+import re
 
 
 
@@ -70,8 +71,6 @@ def create_item():
 		city= payload['city'],
 		state= payload['state'],
 		zip_code= payload['zip_code'],
-		lat=payload['lat'],
-		lng=payload['lng'],
 		owner = current_user.id
 		)
 	item_dict = model_to_dict(item)
