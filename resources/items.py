@@ -175,8 +175,8 @@ def delete_item(id):
 
 
 # filter by category
-@items.route('/filter', methods=['GET'])
-def filter_category():
+@items.route('/category', methods=['GET'])
+def category():
 	# get the information from our request
 	payload = request.get_json()
 	print(payload['category'])
@@ -208,7 +208,29 @@ def filter_category():
 			), 403
 
 
+# get items by current user
+@items.route('/mine', methods=['GET'])
+@login_required
+def my_items():
 
+	# loop through the items in the current user
+	current_user_items = [model_to_dict(item) for item in current_user.items]
+	if len(current_user_items) == 0:
+		return jsonify(
+		data={},
+		message=f"This user has no items yet.",
+		status=401
+		), 401
+	else:
+		#remove the password
+		for item in current_user_items:
+			item['owner'].pop('password')
+
+		return jsonify(
+			data=current_user_items,
+			message=f"Successfully retrieved {len(current_user_items)} items.",
+			status=200
+			), 200
 
 
 
