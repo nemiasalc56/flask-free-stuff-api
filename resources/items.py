@@ -100,26 +100,18 @@ def update_item(id):
 	if item.owner.id == current_user.id:
 		# if they do, update the item
 		print("They match")
-	
-		# look up the item's address
-		item_address = models.Address.get_by_id(item.address.id)
 
-		# update the address
-		item_address.address_1 = payload['address_1'] if 'address_1' in payload else None
-		item_address.address_2 = payload['address_2'] if 'address_2' in payload else None
-		item_address.city = payload['city'] if 'city' in payload else None
-		item_address.state = payload['state'] if 'state' in payload else None
-		item_address.zip_code = payload['zip_code'] if 'zip_code' in payload else None
-		# save the changes
-		item_address.save()
-
-		# print(item_address)
-		# update the item
+		# update the item info
+		item.address_1 = payload['address_1'] if 'address_1' in payload else None
+		item.address_2 = payload['address_2'] if 'address_2' in payload else None
+		item.city = payload['city'] if 'city' in payload else None
+		item.state = payload['state'] if 'state' in payload else None
+		item.zip_code = payload['zip_code'] if 'zip_code' in payload else None
 		item.name = payload['name'] if 'name' in payload else None
 		item.category = payload['category'] if 'category' in payload else None
 		item.description = payload['description'] if 'description' in payload else None
 		item.picture = payload['picture'] if 'picture' in payload else None
-		item.address = item_address
+		
 		# save the changes
 		item.save()
 

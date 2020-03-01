@@ -174,12 +174,18 @@ def update_user(id):
 	user.first_name = payload['first_name'] if 'first_name' in payload else None
 	user.last_name = payload['last_name'] if 'last_name' in payload else None
 	user.picture = payload['picture'] if 'picture' in payload else None
-	user.password = payload['password'] if 'password' in payload else None
+	print("before ", user.password)
+	user.email = payload['email'] if 'email' in payload else None
+	user.password = generate_password_hash(payload['password']) if 'password' in payload else user.password
+	print("after ", user.password)
 	user.address = address
 	user.save()
 
 	# convert model to a dictionary
 	user_dict = model_to_dict(user)
+
+	# remove the password
+	user_dict.pop('password')
 	print(user_dict)
 
 	return jsonify(
@@ -211,5 +217,24 @@ def delete_user(id):
 		), 200
 
 
+# check who is logged in
+@users.route('/logged_in', methods=['GET'])
+def logged_in():
+
+	if not current_user.is_authenticated:
+		return jsonify(
+		data={},
+		message="No user is currently logged in.",
+		status=401
+		), 401
+	else:
+		user_dict = model_to_dict(current_user)
+		user_dict.pop('password')
+
+		return jsonify(
+			data=user_dict,
+			message="Found logged in user",
+			status=200
+		), 200
 
 
