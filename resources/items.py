@@ -167,15 +167,15 @@ def delete_item(id):
 
 
 # filter by category
-@items.route('/category', methods=['GET'])
-def category():
+@items.route('/<category>/category', methods=['GET'])
+def category(category):
 	# get the information from our request
-	payload = request.get_json()
-	print(payload['category'])
+	# payload = request.get_json()
+	print(category)
 
 	# look up items with that category
-	search_items = models.Item.select().where(models.Item.category == payload['category'])
-
+	search_items = models.Item.select().where(models.Item.category == category)
+	print(search_items)
 	# if we found the items we can continue
 	if len(search_items) != 0:
 		# convert search_items to dictionary
@@ -188,7 +188,7 @@ def category():
 
 		return jsonify(
 			data=search_item_dicts,
-			message=f"Succesfully found {len(search_item_dicts)} items with the category of {payload['category']}",
+			message=f"Succesfully found {len(search_item_dicts)} items with the category of {category}",
 			status=200
 			), 200
 	# if not, inform the user

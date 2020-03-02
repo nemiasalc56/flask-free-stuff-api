@@ -176,7 +176,7 @@ def update_user(id):
 	user.picture = payload['picture'] if 'picture' in payload else None
 	print("before ", user.password)
 	user.email = payload['email'] if 'email' in payload else None
-	user.password = generate_password_hash(payload['password']) if 'password' in payload else user.password
+	user.password = generate_password_hash(payload['password']) if 'password' in payload else None
 	print("after ", user.password)
 	user.address = address
 	user.save()
