@@ -70,6 +70,7 @@ class Item(Model):
 	class Meta:
 		database = DATABASE
 
+
 # defining our comment model
 class Comment(Model):
 	comment = CharField()
