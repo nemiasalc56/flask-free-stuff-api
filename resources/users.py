@@ -40,8 +40,8 @@ def register():
 			city= payload['city'],
 			state= payload['state'],
 			zip_code= payload['zip_code'],
-			# lat=payload['lat'],
-			# lng=payload['lng']
+			lat=payload['lat'],
+			lng=payload['lng']
 			)
 
 		# create the user with the address
@@ -165,8 +165,8 @@ def update_user(id):
 	address.city = payload['city'] if 'city' in payload else None
 	address.state = payload['state'] if 'state' in payload else None
 	address.zip_code = payload['zip_code'] if 'zip_code' in payload else None
-	# address.lat = payload['lat'] if 'lat' in payload else None
-	# address.lng = payload['lng'] if 'lng' in payload else None
+	address.lat = payload['lat'] if 'lat' in payload else None
+	address.lng = payload['lng'] if 'lng' in payload else None
 	address.save()
 
 

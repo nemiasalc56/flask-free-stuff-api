@@ -71,6 +71,8 @@ def create_item():
 		city= payload['city'],
 		state= payload['state'],
 		zip_code= payload['zip_code'],
+		lat=payload['lat'],
+		lng=payload['lng'],
 		owner = current_user.id
 		)
 	item_dict = model_to_dict(item)
@@ -107,6 +109,8 @@ def update_item(id):
 		item.city = payload['city'] if 'city' in payload else None
 		item.state = payload['state'] if 'state' in payload else None
 		item.zip_code = payload['zip_code'] if 'zip_code' in payload else None
+		item.lat = payload['lat'] if 'lat' in payload else None
+		item.lng = payload['lng'] if 'lng' in payload else None
 		item.name = payload['name'] if 'name' in payload else None
 		item.category = payload['category'] if 'category' in payload else None
 		item.description = payload['description'] if 'description' in payload else None
