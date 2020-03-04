@@ -52,9 +52,9 @@ def unauthorized():
 		), 403
 
 
-CORS(users, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(items, origins=['http://localhost:3000'], supports_credentials=True)
-CORS(comments, origins=['http://localhost:3000'], supports_credentials=True)
+CORS(users, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
+CORS(items, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
+CORS(comments, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
 
 # use the blueprint that will handle the users stuff
 app.register_blueprint(users, url_prefix='/api/v1/users/')
