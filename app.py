@@ -1,5 +1,6 @@
+import os
 # import flask
-from flask import Flask, jsonify
+from flask import Flask, jsonify, g
 import models
 # import our resources
 from resources.users import users
@@ -61,6 +62,25 @@ app.register_blueprint(items, url_prefix='/api/v1/items/')
 app.register_blueprint(comments, url_prefix='/api/v1/comments/')
 
 
+# use this decorator to cause a function to run before request
+@app.before_request
+def before_request():
+	# store the data as a global variable in g
+	g.db = models.DATABASE
+	g.db.connect()
+
+
+# use this decorator to cause a function to run after request
+@app.after_request
+def after_request(response):
+	g.db.close()
+	return response
+
+
+
+if 'ON_HEROKU' in os.environ: 
+  print('\non heroku!')
+  models.initialize()
 
 
 if __name__ == '__main__':

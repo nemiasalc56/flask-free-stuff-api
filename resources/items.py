@@ -42,7 +42,7 @@ def get_one_item(id):
 		message=f"Succesfully found item with id {item_dict['id']}",
 		status=200
 		), 200
-
+	
 
 # define our create route
 @items.route('/', methods=['POST'])
