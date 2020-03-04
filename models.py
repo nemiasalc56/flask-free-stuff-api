@@ -24,8 +24,8 @@ class Address(Model):
 	city = CharField()
 	state = CharField()
 	zip_code = CharField()
-	# lat = IntegerField()
-	# lng = IntegerField()
+	lat = IntegerField()
+	lng = IntegerField()
 
 	class Meta:
 		database = DATABASE
@@ -54,8 +54,8 @@ class Item(Model):
 	picture = CharField()
 	category = CharField()
 	description = CharField()
-	# lat = IntegerField()
-	# lng = IntegerField()
+	lat = IntegerField()
+	lng = IntegerField()
 	address_1 = CharField() # will come back to this
 	address_2 = CharField()
 	city = CharField()
