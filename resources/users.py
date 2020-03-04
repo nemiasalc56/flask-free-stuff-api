@@ -57,7 +57,7 @@ def register():
 		login_user(new_user)
 
 		user_dict = model_to_dict(new_user)
-		print(user_dict)
+		
 		# remove the password
 		user_dict.pop('password')
 
@@ -104,23 +104,23 @@ def login():
 		else:
 			return jsonify(
 				data={},
-				message="The email or password is incorrect",
+				message="The email or password is incorrect.",
 				status=401
-			), 401
+			), 200
 	# if we don't find the user
 	except models.DoesNotExist:
 		# inform user that email or password is incorrect.
 		return jsonify(
 				data={},
-				message="The email or password is incorrect",
+				message="The email or password is incorrect.",
 				status=401
-		), 401
+		), 201
 
 
 # user show route
 @users.route('/profile', methods=['GET'])
 def user_profile():
-	print(current_user.id)
+	
 	# look up user with current_user id
 	user = models.User.get_by_id(current_user.id)
 
@@ -152,8 +152,7 @@ def logout():
 def update_user(id):
 	# get the info from the body
 	payload = request.get_json()
-	# print(payload)
-	print(id)
+	
 	# look up user with the same id
 	user = models.User.get_by_id(id)
 	
@@ -174,10 +173,8 @@ def update_user(id):
 	user.first_name = payload['first_name'] if 'first_name' in payload else None
 	user.last_name = payload['last_name'] if 'last_name' in payload else None
 	user.picture = payload['picture'] if 'picture' in payload else None
-	print("before ", user.password)
 	user.email = payload['email'] if 'email' in payload else None
 	user.password = generate_password_hash(payload['password']) if 'password' in payload else None
-	print("after ", user.password)
 	user.address = address
 	user.save()
 
@@ -186,7 +183,6 @@ def update_user(id):
 
 	# remove the password
 	user_dict.pop('password')
-	print(user_dict)
 
 	return jsonify(
 		data=user_dict,
@@ -226,7 +222,7 @@ def logged_in():
 		data={},
 		message="No user is currently logged in.",
 		status=401
-		), 401
+		), 200
 	else:
 		user_dict = model_to_dict(current_user)
 		user_dict.pop('password')

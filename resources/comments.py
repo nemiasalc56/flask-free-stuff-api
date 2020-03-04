@@ -5,10 +5,6 @@ from flask_login import current_user, login_required
 from playhouse.shortcuts import model_to_dict
 
 
-
-
-
-
 comments = Blueprint('comments', 'comments')
 
 
@@ -26,14 +22,13 @@ def get_comments(item_id):
 	all_comments_query = models.Comment.select()
 	
 	comments_dict = [model_to_dict(c) for c in all_comments_query if c.item.id == item_id_int]
-	print(comments_dict)
 
 	if len(comments_dict) == 0:
 		return jsonify(
 		data={},
 		message="This item has no comments",
 		status=401
-		), 401
+		), 200
 	else:
 
 		# remove author's password
@@ -73,8 +68,6 @@ def create_comment(item_id):
 	comment_dict['author'].pop('password')
 	comment_dict['item']['owner'].pop('password')
 
-	print(comment_dict)
-
 	return jsonify(
 		data=comment_dict,
 		message="Successfully create commented item",
@@ -84,6 +77,7 @@ def create_comment(item_id):
 
 # comment delete route
 @comments.route('/<id>', methods=['Delete'])
+@login_required
 def delete_comment(id):
 	# look up comment
 	comment = models.Comment.get_by_id(id)

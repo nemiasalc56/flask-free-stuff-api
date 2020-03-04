@@ -3,13 +3,8 @@ from flask import Blueprint, request, jsonify
 # this is so that we can have access to the user that is logged in
 from flask_login import current_user, login_required
 from playhouse.shortcuts import model_to_dict
-import re
-
-
-
 
 items = Blueprint('items', 'items')
-
 
 
 # index route
@@ -23,7 +18,6 @@ def item_index():
 	#remove the password from each item's owner
 	for idx in range(0, len(item_dicts)):
 		item_dicts[idx]['owner'].pop('password')
-	print(item_dicts)
 
 	return jsonify(
 		data=item_dicts,
@@ -35,7 +29,6 @@ def item_index():
 # item show page
 @items.route('/<id>', methods=['GET'])
 def get_one_item(id):
-	print(id)
 	# look up the item that matches this id
 	item = models.Item.get_by_id(id)
 
@@ -58,7 +51,6 @@ def get_one_item(id):
 def create_item():
 	# get info from body
 	payload = request.get_json()
-	print(payload)
 
 	# create item
 	item = models.Item.create(
@@ -101,7 +93,6 @@ def update_item(id):
 	# check if user id matches item's owner
 	if item.owner.id == current_user.id:
 		# if they do, update the item
-		print("They match")
 
 		# update the item info
 		item.address_1 = payload['address_1'] if 'address_1' in payload else None
@@ -166,8 +157,8 @@ def delete_item(id):
 		return jsonify(
 			data={},
 			message="You are not allow to do that, only the owner can delete this item",
-			status=403
-		), 403
+			status=401
+		), 200
 
 
 # filter by category
@@ -175,11 +166,10 @@ def delete_item(id):
 def category(category):
 	# get the information from our request
 	# payload = request.get_json()
-	print(category)
 
 	# look up items with that category
 	search_items = models.Item.select().where(models.Item.category == category)
-	print(search_items)
+
 	# if we found the items we can continue
 	if len(search_items) != 0:
 		# convert search_items to dictionary
@@ -200,8 +190,8 @@ def category(category):
 		return jsonify(
 			data={},
 			message="No items was found on this category",
-			status=403
-			), 403
+			status=401
+			), 200
 
 
 # get items by current user
@@ -216,7 +206,7 @@ def my_items():
 		data={},
 		message=f"This user has no items yet.",
 		status=401
-		), 401
+		), 200
 	else:
 		#remove the password
 		for item in current_user_items:
