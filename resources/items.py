@@ -15,10 +15,13 @@ def item_index():
 
 	# conver items to dictionary
 	item_dicts = [model_to_dict(item) for item in all_items_query]
-	#remove the password from each item's owner
-	for idx in range(0, len(item_dicts)):
-		item_dicts[idx]['owner'].pop('password')
 
+	#remove the password from each item's owner
+	for idx in range(len(item_dicts), 0):
+		item_dicts[idx]['owner'].pop('password')
+	
+	# this is so it shows the last item added first
+	item_dicts.reverse()
 	return jsonify(
 		data=item_dicts,
 		message=f"Succesfully retrieved {len(item_dicts)} items.",
@@ -212,6 +215,8 @@ def my_items():
 		for item in current_user_items:
 			item['owner'].pop('password')
 
+		current_user_items.reverse()
+		
 		return jsonify(
 			data=current_user_items,
 			message=f"Successfully retrieved {len(current_user_items)} items.",
