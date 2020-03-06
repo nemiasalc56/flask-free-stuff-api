@@ -182,7 +182,7 @@ def category(category):
 		for idx in range(0, len(search_item_dicts)):
 			search_item_dicts[idx]['owner'].pop('password')
 
-
+		search_item_dicts.reverse()
 		return jsonify(
 			data=search_item_dicts,
 			message=f"Succesfully found {len(search_item_dicts)} items with the category of {category}",
