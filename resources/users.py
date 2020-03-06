@@ -30,7 +30,7 @@ def register():
 			data={},
 			message="A user with this email already exists.",
 			status=401
-			), 401
+			), 200
 	# if it doesn't, then create account
 	except models.DoesNotExist:
 		# create the address
