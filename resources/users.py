@@ -168,7 +168,6 @@ def update_user(id):
 	address.lng = payload['lng'] if 'lng' in payload else None
 	address.save()
 
-
 	# update user info
 	user.first_name = payload['first_name'] if 'first_name' in payload else None
 	user.last_name = payload['last_name'] if 'last_name' in payload else None

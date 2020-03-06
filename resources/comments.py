@@ -35,8 +35,7 @@ def get_comments(item_id):
 		for idx in range(0, len(comments_dict)):
 			comments_dict[idx]['author'].pop('password')
 			comments_dict[idx]['item']['owner'].pop('password')
-
-		
+			
 		return jsonify(
 			data=comments_dict,
 			message=f"Successfully retrieved {len(comments_dict)} comments",
