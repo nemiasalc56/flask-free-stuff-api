@@ -173,7 +173,6 @@ def update_user(id):
 	user.first_name = payload['first_name'] if 'first_name' in payload else None
 	user.last_name = payload['last_name'] if 'last_name' in payload else None
 	user.picture = payload['picture'] if 'picture' in payload else None
-	user.email = payload['email'] if 'email' in payload else None
 	user.password = generate_password_hash(payload['password']) if 'password' in payload else None
 	user.address = address
 	user.save()
