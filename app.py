@@ -54,16 +54,6 @@ def unauthorized():
 		), 403
 
 
-CORS(users, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
-CORS(items, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
-CORS(comments, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
-
-# use the blueprint that will handle the users stuff
-app.register_blueprint(users, url_prefix='/api/v1/users/')
-app.register_blueprint(items, url_prefix='/api/v1/items/')
-app.register_blueprint(comments, url_prefix='/api/v1/comments/')
-
-
 # use this decorator to cause a function to run before request
 @app.before_request
 def before_request():
@@ -77,6 +67,17 @@ def before_request():
 def after_request(response):
 	g.db.close()
 	return response
+
+CORS(users, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
+CORS(items, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
+CORS(comments, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
+
+# use the blueprint that will handle the users stuff
+app.register_blueprint(users, url_prefix='/api/v1/users/')
+app.register_blueprint(items, url_prefix='/api/v1/items/')
+app.register_blueprint(comments, url_prefix='/api/v1/comments/')
+
+
 
 
 
