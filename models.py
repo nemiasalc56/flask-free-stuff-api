@@ -19,6 +19,7 @@ else:
 
 
 
+
 # defining an address model
 class Address(Model):
 	address_1 = CharField()
