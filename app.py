@@ -22,7 +22,11 @@ PORT = 8000
 
 
 app = Flask(__name__)
-
+# adding this for the session so the app doesn't break when the front end is trying to use
+app.config.update(
+	SESSION_COOKIE_SAMESITE="Lax"
+	# SESSION_COOKIE_SECURE=True
+	)
 
 
 
@@ -35,12 +39,6 @@ login_manager = LoginManager()
 
 # connect the app with login_manager
 login_manager.init_app(app)
-
-
-
-CORS(users, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
-CORS(items, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
-CORS(comments, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
 
 # user loader will use this callback to load the user object
 @login_manager.user_loader
@@ -62,7 +60,11 @@ def unauthorized():
 		status=403
 		), 403
 
-	
+
+CORS(users, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
+CORS(items, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
+CORS(comments, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
+
 # use the blueprint that will handle the users stuff
 app.register_blueprint(users, url_prefix='/api/v1/users/')
 app.register_blueprint(items, url_prefix='/api/v1/items/')
