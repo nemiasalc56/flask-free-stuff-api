@@ -22,7 +22,11 @@ PORT = 8000
 
 
 app = Flask(__name__)
-
+# adding this for the session so the app doesn't break when the front end is trying to use
+app.config.update(
+	SESSION_COOKIE_SAMESITE="Lax",
+	SESSION_COOKIE_SECURE=True
+	)
 
 
 
@@ -60,12 +64,6 @@ def unauthorized():
 CORS(users, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
 CORS(items, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
 CORS(comments, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
-
-# adding this for the session so the app doesn't break when the front end is trying to use
-app.config.update(
-	SESSION_COOKIE_SAMESITE="None",
-	SESSION_COOKIE_SECURE=True
-	)
 
 # use the blueprint that will handle the users stuff
 app.register_blueprint(users, url_prefix='/api/v1/users/')
