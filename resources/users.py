@@ -91,7 +91,7 @@ def login():
 		# if the password is good, log user in
 		if password_is_good:
 			# this logs the user and starts a session
-			login_user(user)
+			login_user(user, remember=True)
 			# remove the password before we send the information to the user
 			user_dict.pop('password')
 
