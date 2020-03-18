@@ -22,6 +22,11 @@ PORT = 8000
 
 
 app = Flask(__name__)
+# # adding this for the session so the app doesn't break when the front end is trying to use
+# app.config.update(
+# 	SESSION_COOKIE_SAMESITE="None",
+# 	SESSION_COOKIE_SECURE=True
+# 	)
 
 
 
@@ -56,7 +61,6 @@ def unauthorized():
 		), 403
 
 
-
 CORS(users, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
 CORS(items, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
 CORS(comments, origins=['http://localhost:3000', 'https://thefreestuff.herokuapp.com'], supports_credentials=True)
@@ -66,11 +70,6 @@ app.register_blueprint(users, url_prefix='/api/v1/users/')
 app.register_blueprint(items, url_prefix='/api/v1/items/')
 app.register_blueprint(comments, url_prefix='/api/v1/comments/')
 
-# adding this for the session so the app doesn't break when the front end is trying to use
-app.config.update(
-	SESSION_COOKIE_SAMESITE="None",
-	SESSION_COOKIE_SECURE=True
-	)
 
 # use this decorator to cause a function to run before request
 @app.before_request
