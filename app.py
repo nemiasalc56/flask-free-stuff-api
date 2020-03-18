@@ -24,7 +24,7 @@ PORT = 8000
 app = Flask(__name__)
 # adding this for the session so the app doesn't break when the front end is trying to use
 app.config.update(
-	SESSION_COOKIE_SAMESITE="Lax",
+	# SESSION_COOKIE_SAMESITE="None",
 	SESSION_COOKIE_SECURE=True
 	)
 
