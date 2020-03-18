@@ -22,7 +22,10 @@ PORT = 8000
 
 
 app = Flask(__name__)
-app.config['SESSION_COOKIE_SAMESITE'] = "Lax"
+app.config['SESSION_COOKIE_SAMESITE'] = "None"
+app.config['SESSION_COOKIE_SECURE'] = True
+
+
 
 # set up a secret key
 app.secret_key = "This is a secret key. It says that we needed a secret key"
