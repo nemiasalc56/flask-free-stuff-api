@@ -68,6 +68,8 @@ app.register_blueprint(users, url_prefix='/api/v1/users/')
 app.register_blueprint(items, url_prefix='/api/v1/items/')
 app.register_blueprint(comments, url_prefix='/api/v1/comments/')
 
+app.config['SESSION_COOKIE_SAMESITE'] = "None"
+app.config['SESSION_COOKIE_SECURE'] = True
 
 # use this decorator to cause a function to run before request
 @app.before_request
