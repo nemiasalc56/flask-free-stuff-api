@@ -200,7 +200,7 @@ def category(category):
 
 # get items by current user
 @items.route('/mine', methods=['GET'])
-@login_required 
+@login_required
 def my_items():
 
 	# loop through the items in the current user

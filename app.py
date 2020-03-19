@@ -25,7 +25,7 @@ app = Flask(__name__)
 
 
 # set up a secret key
-app.secret_key = "This is a secret key. It says that we needed a secret key"
+app.secret_key = "kjkjsfijs984u39ffn48fjskldf"
 
 
 # instantiate LoginManager to a login_manager
