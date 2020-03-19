@@ -27,6 +27,10 @@ app = Flask(__name__)
 # set up a secret key
 app.secret_key = "kjkjsfijs984u39ffn48fjskldf"
 
+app.config["SESSION_FILE_DIR"] =  mkdtemp()
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+
 
 # instantiate LoginManager to a login_manager
 login_manager = LoginManager()
